@@ -1,0 +1,7 @@
+---
+# file: roles/gitlab-ce/vars/main.yml
+
+# Version of gitlab from 'https://hub.docker.com/r/gitlab/gitlab-ce'
+gitlab_version: 12.4.1-ce.0
+
+domain_name: git.nerdtakula.com
