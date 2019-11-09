@@ -1,2 +1,80 @@
 ---
 # file: roles/gitlab-ce/defaults/main.yml
+
+# Version of gitlab from 'https://hub.docker.com/r/gitlab/gitlab-ce'
+gitlab_version: 12.4.1-ce.0
+
+# Domain to match Route53
+domain_name: git.domain.com
+
+# Lets Encrypt service
+gitlab_letsencrypt_enable: false
+gitlab_letsencrypt_contact_email: gitlab+letencrypt@domain.com
+gitlab_letsencrypt_auto_renew: false
+gitlab_letsencrypt_auto_renew_hour: 12
+gitlab_letsencrypt_auto_renew_minute: 30
+gitlab_letsencrypt_auto_renew_day_of_month: '*/7'
+
+# Gitlab basic configuration
+gitlab_time_zone: Pacific/Auckland
+gitlab_lfs_enabled: true
+gitlab_initial_root_password: 'Ch4ng3:M3'
+
+# OmniAuth Configuration
+gitlab_omniauth_enabled: true
+gitlab_omniauth_label: G Suite
+gitlab_omniauth_external_provider: saml
+gitlab_omniauth_allow_single_sign_on: saml
+gitlab_omniauth_sync_email_from_provider: saml
+gitlab_omniauth_block_auto_created_users: false
+gitlab_omniauth_auto_link_ldap_user: false
+gitlab_omniauth_sync_profile_from_provider: saml
+gitlab_omniauth_sync_profile_attribute: email
+gitlab_omniauth_auto_link_saml_user: true
+gitlab_omniauth_auto_sign_in_with_provider: saml
+gitlab_omniauth_idp_cert_fingerprint: 'XX:DD:90:D2:15:9F:12:78:D5:XX:XX:88:XX:6E:XX:FD:XX:60:XX:B1'
+gitlab_omniauth_idp_sso_id: XXXXXXXXX
+gitlab_omniauth_name_identifier_format: 'urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress'
+
+# LDAP configuration
+gitlab_ldap_enable: false
+gitlab_ldap_host: ldap.domain.com
+gitlab_ldap_port: 636
+gitlab_ldap_base: 'ou=People,dc=domain,dc=com'
+gitlab_ldap_uid: 'uid'
+gitlab_ldap_method: tls # "tls" or "ssl" or "plain"
+gitlab_ldap_bind_dn: 'cn=Directory Manager'
+gitlab_ldap_password: '87654321'
+gitlab_ldap_active_directory: false
+gitlab_ldap_allow_username_or_email_login: true
+gitlab_ldap_block_auto_created_users: false
+
+# General Email Settings
+gitlab_email_from: gitlab@domain.com
+gitlab_email_display_name: 'GitLab @ Domain'
+gitlab_email_reply_to: gitlab@domain.com
+gitlab_email_subject_suffix: 'GitLab @ Domain'
+
+# Email SMTP configuration
+gitlab_smtp_enable: true
+gitlab_smtp_address: smtp.gmail.com
+gitlab_smtp_port: 587
+gitlab_smtp_user_name: noreply@domain.com
+gitlab_smtp_password: "************"
+gitlab_smtp_domain: smtp.gmail.com
+gitlab_smtp_authentication: login
+gitlab_smtp_enable_starttls_auto: true
+gitlab_smtp_tls: false
+gitlab_smtp_openssl_verify_mode: peer # Can be: 'none', 'peer', 'client_once', 'fail_if_no_peer_cert', see http://api.rubyonrails.org/classes/ActionMailer/Base.html
+
+# Disable the built-in Postgres
+gitlab_postgresql_enable: false
+gitlab_postgresql_shared_buffers: 2GB # Recommend value is 1/4 of total RAM, up to 14GB.
+
+# Database configuration
+gitlab_db_adapter: postgresql
+gitlab_db_host: gitlab-db.domain.com
+gitlab_db_port: 5432
+gitlab_db_database: database-name
+gitlab_db_username: database-username
+gitlab_db_password: database-password
