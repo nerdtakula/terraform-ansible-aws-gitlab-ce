@@ -27,21 +27,21 @@ resource "aws_ebs_volume" "persistent_storage" {
   }
 }
 
-# resource "aws_ebs_snapshot" "persistent_storage" {
-#   volume_id   = aws_ebs_volume.persistent_storage.id
-#   description = "${var.namespace}-${var.stage}-${var.name}-storage-snapshot"
+resource "aws_ebs_snapshot" "persistent_storage" {
+  volume_id   = aws_ebs_volume.persistent_storage.id
+  description = "${var.namespace}-${var.stage}-${var.name}-storage-snapshot"
 
-#   timeouts {
-#     create = "24h"  # Snapshot once a day
-#     delete = "120h" # Hold onto for 5 days
-#   }
+  timeouts {
+    create = "24h"  # Snapshot once a day
+    delete = "120h" # Hold onto for 5 days
+  }
 
-#   tags = {
-#     Name      = "${var.namespace}-${var.stage}-${var.name}-storage-snapshot"
-#     NameSpace = var.namespace
-#     Stage     = var.stage
-#   }
-# }
+  tags = {
+    Name      = "${var.namespace}-${var.stage}-${var.name}-storage-snapshot"
+    NameSpace = var.namespace
+    Stage     = var.stage
+  }
+}
 
 /*
  * Setup service instance
