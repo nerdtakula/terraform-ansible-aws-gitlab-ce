@@ -94,12 +94,19 @@ resource "aws_instance" "instance" {
 echo "[gitlab]" > ${path.module}/ansible/${var.namespace}-${var.stage}-${var.name}.inventory;
 echo "${aws_instance.instance.public_ip} ansible_user=${var.ansible_user} ansible_ssh_private_key_file=${var.private_ssh_key}" >> ${path.module}/ansible/${var.namespace}-${var.stage}-${var.name}.inventory;
 EOT
-# export ANSIBLE_HOST_KEY_CHECKING=False;
-# ansible-playbook -u ${var.ansible_user} --private-key ${var.private_ssh_key} -i ${path.module}/ansible/${var.namespace}-${var.stage}-${var.name}.inventory ${path.module}/ansible/site.yml
+    # MOVED... we need to make sure the additional volume is attached first -> see: aws_volume_attachment.persistent_storage
+    # export ANSIBLE_HOST_KEY_CHECKING=False;
+    # ansible-playbook -u ${var.ansible_user} --private-key ${var.private_ssh_key} -i ${path.module}/ansible/${var.namespace}-${var.stage}-${var.name}.inventory ${path.module}/ansible/site.yml
   }
 
   tags = {
     Name      = "${var.namespace}-${var.stage}-${var.name}"
+    NameSpace = var.namespace
+    Stage     = var.stage
+  }
+
+  volume_tags = {
+    Name      = "${var.namespace}-${var.stage}-${var.name}-root-volume"
     NameSpace = var.namespace
     Stage     = var.stage
   }
