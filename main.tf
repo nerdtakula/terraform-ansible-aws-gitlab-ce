@@ -109,11 +109,11 @@ echo "${k} = ${v}" >> ./ansible-${var.namespace}-${var.stage}-${var.name}.invent
   }
 
   provisioner "remote-exec" {
-    when    = "destroy"
-    command = <<EOT
-docker stop $(docker ps -a -q);
-umount /mnt/gitlab-data;
-EOT
+    when = "destroy"
+    inline = [
+      "sudo docker stop $(docker ps -a -q)",
+      "sudo umount /mnt/gitlab-data"
+    ]
   }
 
   tags = {
