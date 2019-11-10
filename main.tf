@@ -108,6 +108,8 @@ echo "[gitlab]" > ./ansible-${var.namespace}-${var.stage}-${var.name}.inventory;
 echo "${aws_instance.instance.public_ip} ansible_user=${var.ansible_user} ansible_ssh_private_key_file=${var.private_ssh_key}" >> ./ansible-${var.namespace}-${var.stage}-${var.name}.inventory;
 echo "" >> ./ansible-${var.namespace}-${var.stage}-${var.name}.inventory;
 echo "[gitlab:vars]" >> ./ansible-${var.namespace}-${var.stage}-${var.name}.inventory;
+echo "ssl_cert = ${var.ssl_cert_file}" >> ./ansible-${var.namespace}-${var.stage}-${var.name}.inventory;
+echo "ssl_key = ${var.ssl_cert_key}" >> ./ansible-${var.namespace}-${var.stage}-${var.name}.inventory;
 %{for k, v in var.ansible_vars~}
 echo "${k} = ${v}" >> ./ansible-${var.namespace}-${var.stage}-${var.name}.inventory;
 %{endfor~}

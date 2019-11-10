@@ -6,6 +6,8 @@ gitlab_version: 12.4.1-ce.0
 
 # Domain to match Route53
 domain_name: git.domain.com
+ssl_cert: git.domain.com.cert
+ssl_key: git.domain.com.key
 
 # Lets Encrypt service
 gitlab_letsencrypt_enable: false
