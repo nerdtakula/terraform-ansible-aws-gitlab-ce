@@ -31,7 +31,7 @@ services:
         letsencrypt['auto_renew_hour'] = '{{ gitlab_letsencrypt_auto_renew_hour }}'
         letsencrypt['auto_renew_minute'] = '{{ gitlab_letsencrypt_auto_renew_minute }}'
         letsencrypt['auto_renew_day_of_month'] = '{{ gitlab_letsencrypt_auto_renew_day_of_month }}'
-        {% endif %}
+{% endif %}
         external_url 'https://{{ domain_name }}/' # Must use https protocol
         gitlab_rails['registry_enabled'] = false
         gitlab_rails['time_zone'] = '{{ gitlab_time_zone }}'
@@ -65,7 +65,7 @@ services:
             'label': '{{ gitlab_omniauth_label }}'
           }
         ]
-        {% endif %}
+{% endif %}
 
         # LDAP configuration
         gitlab_rails['ldap_enabled'] = {{ gitlab_ldap_enable|lower }}
@@ -84,7 +84,7 @@ services:
             block_auto_created_users: {{ gitlab_ldap_block_auto_created_users|lower }}
             base: '{{ gitlab_ldap_bind_dn|lower }}'
         EOS
-        {% endif %}
+{% endif %}
 
         # Email Settings
         gitlab_rails['gitlab_email_from'] = '{{ gitlab_email_from  }}'
@@ -117,7 +117,7 @@ services:
         gitlab_rails['db_database'] = '{{ gitlab_db_database }}'
         gitlab_rails['db_username'] = '{{ gitlab_db_username }}'
         gitlab_rails['db_password'] = '{{ gitlab_db_password }}'
-        {% endif %}
+{% endif %}
 
         # Backups
         gitlab_rails['backup_keep_time'] = 14515200
