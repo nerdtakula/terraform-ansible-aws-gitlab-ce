@@ -70,3 +70,9 @@ variable "ansible_vars" {
   description = "variables to pass though to ansible playbook for gitlab instance"
   default     = {}
 }
+
+variable "persistent_storage_size" {
+  type        = number
+  description = "Size of attached persistent storage (in GBs)"
+  default     = 40
+}

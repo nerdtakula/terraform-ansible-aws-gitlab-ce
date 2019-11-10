@@ -31,7 +31,7 @@ EOT
 
 resource "aws_ebs_volume" "persistent_storage" {
   availability_zone = aws_instance.instance.availability_zone # Same zone as instance
-  size              = 40
+  size              = var.persistent_storage_size
 
   tags = {
     Name      = "${var.namespace}-${var.stage}-${var.name}-storage"
