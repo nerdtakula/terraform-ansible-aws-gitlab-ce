@@ -1,4 +1,17 @@
 /*
+ * Deal with SSL cert files and ansible
+ */
+resource "local_file" "ssl_cert" {
+  content  = file("${var.ssl_cert_file}")
+  filename = "${path.module}/ansible/roles/gitlab-ce/tasks/files/${var.ssl_cert_file}"
+}
+
+resource "local_file" "ssl_key" {
+  content  = file("${var.ssl_cert_key}")
+  filename = "${path.module}/ansible/roles/gitlab-ce/tasks/files/${var.ssl_cert_key}"
+}
+
+/*
  * Persistent storage for instance
  */
 resource "aws_volume_attachment" "persistent_storage" {

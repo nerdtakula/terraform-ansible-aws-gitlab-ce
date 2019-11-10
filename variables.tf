@@ -49,6 +49,16 @@ variable "private_ssh_key" {
   description = "Name of SSH prvate key that will be used to run Ansible playbook, The key should match the public key present in AWS"
 }
 
+variable "ssl_cert_file" {
+  type        = string
+  description = "SSL cert file for website"
+}
+
+variable "ssl_cert_key" {
+  type        = string
+  description = "SSL cert KEY file for website"
+}
+
 variable "ansible_user" {
   type        = string
   description = "username of the root user on the EC2 instance"
