@@ -1,8 +1,0 @@
----
-# file: site.yml
-
-- hosts: gitlab
-  become: yes
-  roles:
-    - common
-    - gitlab-ce

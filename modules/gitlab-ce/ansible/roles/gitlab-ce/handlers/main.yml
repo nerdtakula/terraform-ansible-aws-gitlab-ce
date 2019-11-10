@@ -1,7 +1,0 @@
----
-# file: roles/gitlab-ce/handlers/main.yml
-
-- name: restart docker
-  service:
-    name: docker
-    state: restarted
