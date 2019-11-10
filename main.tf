@@ -3,22 +3,18 @@
  */
 locals {
   # General Info
-  namespace = "tak"
-  name = "git"
-  stage = "dev"
-  # Domain name to use
-  domain = "git.nerdtakula.com"
-  # Region to use
-  region = "us-west-2" # Oregon
-  # Get the list of availability zones
-  availability_zones = ["us-west-2a", "us-west-2b", "us-west-2c", "us-west-2d"]
+  namespace          = "tak"
+  name               = "git"
+  stage              = "dev"
+  region             = "us-west-2"                                              # Oregon
+  availability_zones = ["us-west-2a", "us-west-2b", "us-west-2c", "us-west-2d"] # Get the list of availability zones
 }
 
 /*
  * Configure out AWS connection
  */
 provider "aws" {
-  region  = local.region
+  region = local.region
 }
 
 /*
