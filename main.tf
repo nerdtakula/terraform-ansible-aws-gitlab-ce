@@ -101,7 +101,7 @@ resource "aws_instance" "instance" {
   # Install & Configure via Ansible Playbook
   provisioner "local-exec" {
     command = <<EOT
-echo "${template_file.inventory.rendered}" > ./ansible-${var.namespace}-${var.stage}-${var.name}.inventory;
+echo "${data.template_file.inventory.rendered}" > ./ansible-${var.namespace}-${var.stage}-${var.name}.inventory;
 EOT
     #     command = <<EOT
     # echo "[gitlab]" > ./ansible-${var.namespace}-${var.stage}-${var.name}.inventory;
