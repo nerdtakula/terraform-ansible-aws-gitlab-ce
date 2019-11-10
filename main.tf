@@ -121,13 +121,13 @@ echo "${k} = ${v}" >> ./ansible-${var.namespace}-${var.stage}-${var.name}.invent
     # We need to make sure the additional volume is attached first before running playbook -> see: aws_volume_attachment.persistent_storage
   }
 
-  provisioner "remote-exec" {
-    when = "destroy"
-    inline = [
-      "sudo docker stop $(docker ps -a -q)",
-      "sudo umount /mnt/gitlab-data"
-    ]
-  }
+  # provisioner "remote-exec" {
+  #   when = "destroy"
+  #   inline = [
+  #     "sudo docker stop $(docker ps -a -q)",
+  #     "sudo umount /mnt/gitlab-data"
+  #   ]
+  # }
 
   tags = {
     Name      = "${var.namespace}-${var.stage}-${var.name}"
