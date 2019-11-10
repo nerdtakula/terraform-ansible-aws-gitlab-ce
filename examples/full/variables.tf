@@ -1,6 +1,7 @@
 variable "region" {
   type        = string
   description = "AWS region in which to provision the AWS resources"
+  default     = "us-west-1"
 }
 
 variable "namespace" {

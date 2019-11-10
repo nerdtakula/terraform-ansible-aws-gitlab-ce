@@ -1,35 +1,37 @@
 variable "region" {
   type        = string
   description = "AWS region in which to provision the AWS resources"
+  default     = "us-west-1"
 }
 
 variable "namespace" {
   type        = string
   description = "Namespace, which could be your organization name, e.g. 'eg' or 'cp'"
-  default     = ""
+  default     = "tak"
 }
 
 variable "stage" {
   type        = string
   description = "Stage, e.g. 'prod', 'staging', 'dev', or 'test'"
-  default     = ""
+  default     = "test"
 }
 
 variable "name" {
   type        = string
   description = "Solution name, e.g. 'app' or 'gitlab'"
+  default     = "gitlab"
 }
 
 variable "description" {
   type        = string
-  default     = "Gitlab CE server as Docker container running on Elastic Compute Cloud"
   description = "Will be used as Elastic Compute Cloud application description"
+  default     = "Gitlab CE server as Docker container running on Elastic Compute Cloud"
 }
 
 variable "instance_type" {
   type        = string
-  default     = "t2.medium"
   description = "EC2 instance type for Gitlab CE master, e.g. 't2.medium'"
+  default     = "t2.medium"
 }
 
 variable "vpc_id" {
@@ -49,12 +51,12 @@ variable "private_ssh_key" {
 
 variable "ansible_user" {
   type        = string
-  default     = "ubuntu"
   description = "username of the root user on the EC2 instance"
+  default     = "ubuntu"
 }
 
 variable "ansible_vars" {
-  type        = map(string)
+  type        = map
   description = "variables to pass though to ansible playbook for gitlab instance"
   default     = {}
 }
