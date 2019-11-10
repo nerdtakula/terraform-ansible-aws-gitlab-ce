@@ -104,11 +104,11 @@ services:
         gitlab_rails['smtp_tls'] = {{ gitlab_smtp_tls|lower }}
         gitlab_rails['smtp_openssl_verify_mode'] = '{{ gitlab_smtp_openssl_verify_mode }}' # Can be: 'none', 'peer', 'client_once', 'fail_if_no_peer_cert', see http://api.rubyonrails.org/classes/ActionMailer/Base.html
 
-        # Disable the built-in Postgres
+        # Built-in Postgres
         postgresql['enable'] = {{ gitlab_postgresql_enable|lower }}
         # Recommend value is 1/4 of total RAM, up to 14GB.
         postgresql['shared_buffers'] = '{{ gitlab_postgresql_shared_buffers }}'
-        {% if gitlab_postgresql_enable == 'True' %}
+        {% if gitlab_postgresql_enable == 'False' %}
         # PostgreSQl database configuration
         gitlab_rails['db_adapter'] = '{{ gitlab_db_adapter }}'
         gitlab_rails['db_encoding'] = 'utf8'

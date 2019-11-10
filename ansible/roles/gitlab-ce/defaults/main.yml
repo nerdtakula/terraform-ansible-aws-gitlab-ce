@@ -69,8 +69,8 @@ gitlab_smtp_enable_starttls_auto: true
 gitlab_smtp_tls: false
 gitlab_smtp_openssl_verify_mode: peer # Can be: 'none', 'peer', 'client_once', 'fail_if_no_peer_cert', see http://api.rubyonrails.org/classes/ActionMailer/Base.html
 
-# Disable the built-in Postgres
-gitlab_postgresql_enable: false
+# Built in postgres (Disable to use database configuration below)
+gitlab_postgresql_enable: true
 gitlab_postgresql_shared_buffers: 2GB # Recommend value is 1/4 of total RAM, up to 14GB.
 
 # Database configuration
