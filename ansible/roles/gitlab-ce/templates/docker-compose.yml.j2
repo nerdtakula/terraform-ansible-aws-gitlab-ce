@@ -25,11 +25,13 @@ services:
       GITLAB_OMNIBUS_CONFIG: |
         # Gitlab basic configuration
         letsencrypt['enable'] = {{ gitlab_letsencrypt_enable|lower }}
+        {% if gitlab_letsencrypt_enable == 'True' %}
         letsencrypt['contact_emails'] = ['{{ gitlab_letsencrypt_contact_email }}']
         letsencrypt['auto_renew'] = {{ gitlab_letsencrypt_auto_renew|lower }}
         letsencrypt['auto_renew_hour'] = '{{ gitlab_letsencrypt_auto_renew_hour }}'
         letsencrypt['auto_renew_minute'] = '{{ gitlab_letsencrypt_auto_renew_minute }}'
         letsencrypt['auto_renew_day_of_month'] = '{{ gitlab_letsencrypt_auto_renew_day_of_month }}'
+        {% endif %}
         external_url 'https://{{ domain_name }}/' # Must use https protocol
         gitlab_rails['registry_enabled'] = false
         gitlab_rails['time_zone'] = '{{ gitlab_time_zone }}'
@@ -38,6 +40,7 @@ services:
 
         # OmniAuth Configuration
         gitlab_rails['omniauth_enabled'] = {{ gitlab_omniauth_enabled|lower }}
+        {% if gitlab_omniauth_enabled == 'True' %}
         gitlab_rails['omniauth_external_providers'] = ['{{ gitlab_omniauth_external_provider }}']
         gitlab_rails['omniauth_allow_single_sign_on'] = ['{{ gitlab_omniauth_allow_single_sign_on }}']
         gitlab_rails['omniauth_sync_email_from_provider'] = '{{ gitlab_omniauth_sync_email_from_provider }}'
@@ -62,9 +65,11 @@ services:
             'label': '{{ gitlab_omniauth_label }}'
           }
         ]
+        {% endif %}
 
         # LDAP configuration
         gitlab_rails['ldap_enabled'] = {{ gitlab_ldap_enable|lower }}
+        {% if gitlab_ldap_enable == 'True' %}
         gitlab_rails['ldap_servers'] = YAML.load <<-'EOS' # remember to close this block with 'EOS' below
           main: # 'main' is the GitLab 'provider ID' of this LDAP server
             label: 'LDAP'
@@ -79,6 +84,7 @@ services:
             block_auto_created_users: {{ gitlab_ldap_block_auto_created_users|lower }}
             base: '{{ gitlab_ldap_bind_dn|lower }}'
         EOS
+        {% endif %}
 
         # Email Settings
         gitlab_rails['gitlab_email_from'] = '{{ gitlab_email_from  }}'
@@ -102,6 +108,7 @@ services:
         postgresql['enable'] = {{ gitlab_postgresql_enable|lower }}
         # Recommend value is 1/4 of total RAM, up to 14GB.
         postgresql['shared_buffers'] = '{{ gitlab_postgresql_shared_buffers }}'
+        {% if gitlab_postgresql_enable == 'True' %}
         # PostgreSQl database configuration
         gitlab_rails['db_adapter'] = '{{ gitlab_db_adapter }}'
         gitlab_rails['db_encoding'] = 'utf8'
@@ -110,6 +117,7 @@ services:
         gitlab_rails['db_database'] = '{{ gitlab_db_database }}'
         gitlab_rails['db_username'] = '{{ gitlab_db_username }}'
         gitlab_rails['db_password'] = '{{ gitlab_db_password }}'
+        {% endif %}
 
         # Backups
         gitlab_rails['backup_keep_time'] = 14515200
