@@ -1,14 +1,3 @@
-# data "template_file" "inventory" {
-#   template = file("${path.module}/ansible/ansible.inventory.tpl")
-
-#   vars = {
-#     public_ip       = aws_instance.instance.public_ip
-#     ansible_user    = var.ansible_user
-#     private_ssh_key = var.private_ssh_key
-#     ansible_vars    = var.ansible_vars
-#   }
-# }
-
 /*
  * Persistent storage for instance
  */
@@ -21,9 +10,9 @@ resource "aws_volume_attachment" "persistent_storage" {
   provisioner "local-exec" {
     command = <<EOT
 export ANSIBLE_HOST_KEY_CHECKING=False;
-echo '#!/usr/bin/env bash\nexport ANSIBLE_HOST_KEY_CHECKING=False\nansible-playbook -u ${var.ansible_user} --private-key ${var.private_ssh_key} -i ./ansible-${var.namespace}-${var.stage}-${var.name}.inventory ${path.module}/ansible/site.yml' >> ${path.module}/ansible/${var.namespace}-${var.stage}-${var.name}.sh
+echo '#!/usr/bin/env bash\nexport ANSIBLE_HOST_KEY_CHECKING=False\nansible-playbook -u ${var.ansible_user} --private-key ${var.private_ssh_key} -i ./ansible-${var.namespace}-${var.stage}-${var.name}.inventory ${path.module}/ansible/site.yml' >> ./ansible-${var.namespace}-${var.stage}-${var.name}.sh
+ansible-playbook -u ${var.ansible_user} --private-key ${var.private_ssh_key} -i ./ansible-${var.namespace}-${var.stage}-${var.name}.inventory ${path.module}/ansible/site.yml
 EOT
-    # ansible-playbook -u ${var.ansible_user} --private-key ${var.private_ssh_key} -i ./ansible-${var.namespace}-${var.stage}-${var.name}.inventory ${path.module}/ansible/site.yml
   }
 }
 
@@ -99,8 +88,6 @@ resource "aws_instance" "instance" {
     host        = aws_instance.instance.public_ip
   }
 
-
-
   # Install & Configure via Ansible Playbook
   provisioner "local-exec" {
     command = <<EOT
@@ -119,6 +106,14 @@ echo "${k} = ${v}" >> ./ansible-${var.namespace}-${var.stage}-${var.name}.invent
     # EOT
     # echo "${var.ansible_vars}" > ./ansible-${var.namespace}-${var.stage}-${var.name}.inventory;
     # We need to make sure the additional volume is attached first before running playbook -> see: aws_volume_attachment.persistent_storage
+  }
+
+  provisioner "remote-exec" {
+    when    = "destroy"
+    command = <<EOT
+docker stop $(docker ps -a -q);
+umount /mnt/gitlab-data;
+EOT
   }
 
   tags = {
