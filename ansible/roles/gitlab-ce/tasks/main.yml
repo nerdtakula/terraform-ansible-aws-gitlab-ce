@@ -1,0 +1,155 @@
+---
+# file: roles/gitlab-ce/tasks/main.yml
+
+- name: create local group 'git'
+  group:
+    name: git
+    gid: 998
+    state: present
+
+- name: create local user 'git'
+  user:
+    name: git
+    comment: Gitlab local system user
+    uid: 998
+    system: no # The git user needs to be able to ssh in
+    group: git
+    append: yes
+
+- name: create gitlab data directory
+  file:
+    name: /mnt/gitlab-data/data
+    state: directory
+    recurse: yes
+    owner: git
+    group: git
+
+- name: create gitlab logs directory
+  file:
+    name: /var/logs/gitlab
+    state: directory
+    recurse: yes
+    owner: git
+    group: git
+
+- name: create gitlab config directory
+  file:
+    name: /mnt/gitlab-data/config
+
+    state: directory
+    recurse: yes
+    owner: git
+    group: git
+
+- name: create ssl certs directory
+  file:
+    name: /mnt/gitlab-data/certs
+    state: directory
+    recurse: yes
+    owner: git
+    group: git
+
+- name: create gitlab-shell directory
+  file:
+    name: /opt/gitlab/embedded/service/gitlab-shell/bin
+    state: directory
+    recurse: yes
+    owner: git
+    group: git
+
+- name: create ssh directory for gitlab service
+  file:
+    name: /mnt/gitlab-data/data/.ssh
+    state: directory
+    recurse: yes
+    owner: git
+    group: git
+    mode: 0700
+
+- name: link git user .ssh directory to continers .ssh directory
+  file:
+    src: /mnt/gitlab-data/data/.ssh
+    dest: /home/git/.ssh
+    owner: git
+    group: git
+    state: link
+
+- name: check if ssh key has been created for user 'git'
+  stat:
+    path: /home/git/.ssh/id_rsa
+  register: ssh_key_result
+
+- name: create ssh key user 'git'
+  user:
+    name: git
+    generate_ssh_key: yes
+    ssh_key_bits: 4096
+    ssh_key_file: .ssh/id_rsa
+  when: ssh_key_result.stat.exists == False
+
+- name: check if authorized_keys file already exists
+  stat:
+    path: /home/git/.ssh/authorized_keys
+  register: auth_keys_result
+
+- name: set up initial authorized_keys file
+  copy:
+    src: /home/git/.ssh/id_rsa.pub
+    dest: /home/git/.ssh/authorized_keys
+    remote_src: yes
+    owner: git
+    group: git
+    mode: 0600
+  when: auth_keys_result.stat.exists == False
+
+- name: setup passthrough script for local ssh to container ssh
+  copy:
+    src: gitlab-shell
+    dest: /opt/gitlab/embedded/service/gitlab-shell/bin/gitlab-shell
+    mode: 0744
+    owner: git
+    group: git
+
+- name: copy SSL certificates for service
+  copy:
+    src: '{{ item.src }}'
+    dest: '/mnt/gitlab-data/certs/{{ item.dest }}'
+    owner: git
+    group: git
+  loop:
+    - { src: wildcard.nerdtakula.com.crt, dest: '{{ domain_name }}.crt' }
+    - { src: wildcard.nerdtakula.com.key, dest: '{{ domain_name }}.key' }
+
+- name: be sure docker-compose working directory exists
+  file:
+    path: /opt/gitlab-ce
+    state: directory
+  tags: gitlab
+
+- name: check for existing docker-compose file
+  stat:
+    path: /opt/gitlab-ce/docker-compose.yml
+  register: stat_result
+
+- name: tear down existing services
+  docker_compose:
+    project_src: /opt/gitlab-ce
+    state: absent
+  when: stat_result.stat.exists == True
+  tags: gitlab
+
+- name: place our docker-compose file
+  template:
+    src: docker-compose.yml.j2
+    dest: /opt/gitlab-ce/docker-compose.yml
+    backup: yes
+  tags: gitlab
+
+- name: create and start services
+  docker_compose:
+    project_src: /opt/gitlab-ce
+  register: output
+  tags: gitlab
+
+- debug:
+    var: output

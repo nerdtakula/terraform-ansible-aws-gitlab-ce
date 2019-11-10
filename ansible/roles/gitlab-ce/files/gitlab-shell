@@ -1,0 +1,2 @@
+#!/bin/sh
+ssh -i /home/git/.ssh/id_rsa -p 9922 -o StrictHostKeyChecking=no git@127.0.0.1 "SSH_ORIGINAL_COMMAND=\"${SSH_ORIGINAL_COMMAND}\" $0 $@"
