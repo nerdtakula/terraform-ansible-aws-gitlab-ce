@@ -52,3 +52,9 @@ variable "ansible_user" {
   default     = "ubuntu"
   description = "username of the root user on the EC2 instance"
 }
+
+variable "ansible_vars" {
+  type        = map(string)
+  description = "variables to pass though to ansible playbook for gitlab instance"
+  default     = {}
+}

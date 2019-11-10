@@ -7,13 +7,13 @@ resource "aws_volume_attachment" "persistent_storage" {
   instance_id = aws_instance.instance.id
 
   # Run the playbook after the volume has mounted
-  provisioner "local-exec" {
-    command = <<EOT
-export ANSIBLE_HOST_KEY_CHECKING=False;
-echo '#!/usr/bin/env bash\nexport ANSIBLE_HOST_KEY_CHECKING=False\nansible-playbook -u ${var.ansible_user} --private-key ${var.private_ssh_key} -i ${path.module}/ansible/${var.namespace}-${var.stage}-${var.name}.inventory ${path.module}/ansible/site.yml' >> ${path.module}/ansible/${var.namespace}-${var.stage}-${var.name}.sh
-ansible-playbook -u ${var.ansible_user} --private-key ${var.private_ssh_key} -i ${path.module}/ansible/${var.namespace}-${var.stage}-${var.name}.inventory ${path.module}/ansible/site.yml
-EOT
-  }
+  #   provisioner "local-exec" {
+  #     command = <<EOT
+  # export ANSIBLE_HOST_KEY_CHECKING=False;
+  # echo '#!/usr/bin/env bash\nexport ANSIBLE_HOST_KEY_CHECKING=False\nansible-playbook -u ${var.ansible_user} --private-key ${var.private_ssh_key} -i ${path.module}/ansible/${var.namespace}-${var.stage}-${var.name}.inventory ${path.module}/ansible/site.yml' >> ${path.module}/ansible/${var.namespace}-${var.stage}-${var.name}.sh
+  # ansible-playbook -u ${var.ansible_user} --private-key ${var.private_ssh_key} -i ${path.module}/ansible/${var.namespace}-${var.stage}-${var.name}.inventory ${path.module}/ansible/site.yml
+  # EOT
+  #   }
 }
 
 resource "aws_ebs_volume" "persistent_storage" {
@@ -93,6 +93,8 @@ resource "aws_instance" "instance" {
     command = <<EOT
 echo "[gitlab]" > ${path.module}/ansible/${var.namespace}-${var.stage}-${var.name}.inventory;
 echo "${aws_instance.instance.public_ip} ansible_user=${var.ansible_user} ansible_ssh_private_key_file=${var.private_ssh_key}" >> ${path.module}/ansible/${var.namespace}-${var.stage}-${var.name}.inventory;
+echo "\n\n[gitlab:vars]" > ${path.module}/ansible/${var.namespace}-${var.stage}-${var.name}.inventory;
+echo "${var.ansible_vars}" > ${path.module}/ansible/${var.namespace}-${var.stage}-${var.name}.inventory;
 EOT
     # MOVED... we need to make sure the additional volume is attached first -> see: aws_volume_attachment.persistent_storage
     # export ANSIBLE_HOST_KEY_CHECKING=False;
