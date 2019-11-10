@@ -44,7 +44,7 @@ module "gitlab-ce" {
   ssh_key_pair    = aws_key_pair.ssh_key.key_name
   private_ssh_key = "id_rsa"
   vpc_id          = module.vpc.vpc_id
-  ssl_cert_file   = "git.nerdtakula.com.cert"
+  ssl_cert_file   = "git.nerdtakula.com.crt"
   ssl_cert_key    = "git.nerdtakula.com.key"
 
   ansible_vars = {

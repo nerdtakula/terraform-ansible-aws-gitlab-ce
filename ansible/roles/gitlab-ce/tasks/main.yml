@@ -117,8 +117,8 @@
     owner: git
     group: git
   loop:
-    - { src: {{ ssl_cert }}, dest: '{{ domain_name }}.crt' }
-    - { src: {{ ssl_key }}, dest: '{{ domain_name }}.key' }
+    - { src: '{{ ssl_cert }}', dest: '{{ domain_name }}.crt' }
+    - { src: '{{ ssl_key }}', dest: '{{ domain_name }}.key' }
 
 - name: be sure docker-compose working directory exists
   file:
