@@ -35,7 +35,7 @@ module "vpc" {
 }
 
 module "gitlab-ce" {
-  source          = "git::https://github.com/nerdtakula/terraform-ansiable-aws-gitlab-ce.git"
+  source          = "git::https://github.com/nerdtakula/terraform-ansible-aws-gitlab-ce.git"
   namespace       = local.namespace
   stage           = local.stage
   name            = local.name
@@ -46,7 +46,8 @@ module "gitlab-ce" {
   vpc_id          = module.vpc.vpc_id
 
   ansible_vars = {
-    gitlab_version = "12.4.1-ce.0",
-    domain_name    = "git.nerdtakula.com"
+    gitlab_version               = "12.4.1-ce.0",
+    domain_name                  = "git.nerdtakula.com"
+    gitlab_initial_root_password = "Ch4ng3:M3"
   }
 }
