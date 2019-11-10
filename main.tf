@@ -1,13 +1,13 @@
-data "template_file" "inventory" {
-  template = file("${path.module}/ansible/ansible.inventory.tpl")
+# data "template_file" "inventory" {
+#   template = file("${path.module}/ansible/ansible.inventory.tpl")
 
-  vars = {
-    public_ip       = aws_instance.instance.public_ip
-    ansible_user    = var.ansible_user
-    private_ssh_key = var.private_ssh_key
-    ansible_vars    = var.ansible_vars
-  }
-}
+#   vars = {
+#     public_ip       = aws_instance.instance.public_ip
+#     ansible_user    = var.ansible_user
+#     private_ssh_key = var.private_ssh_key
+#     ansible_vars    = var.ansible_vars
+#   }
+# }
 
 /*
  * Persistent storage for instance
@@ -20,7 +20,6 @@ resource "aws_volume_attachment" "persistent_storage" {
   # Run the playbook after the volume has mounted
   provisioner "local-exec" {
     command = <<EOT
-echo "${data.template_file.inventory.rendered}" > ./ansible-${var.namespace}-${var.stage}-${var.name}.inventory;
 export ANSIBLE_HOST_KEY_CHECKING=False;
 echo '#!/usr/bin/env bash\nexport ANSIBLE_HOST_KEY_CHECKING=False\nansible-playbook -u ${var.ansible_user} --private-key ${var.private_ssh_key} -i ./ansible-${var.namespace}-${var.stage}-${var.name}.inventory ${path.module}/ansible/site.yml' >> ${path.module}/ansible/${var.namespace}-${var.stage}-${var.name}.sh
 EOT
@@ -100,19 +99,27 @@ resource "aws_instance" "instance" {
     host        = aws_instance.instance.public_ip
   }
 
+
+
   # Install & Configure via Ansible Playbook
-  #   provisioner "local-exec" {
-  #     command = <<EOT
-  # echo "${data.template_file.inventory.rendered}" > ./ansible-${var.namespace}-${var.stage}-${var.name}.inventory;
-  # EOT
-  #     #     command = <<EOT
-  #     # echo "[gitlab]" > ./ansible-${var.namespace}-${var.stage}-${var.name}.inventory;
-  #     # echo "${aws_instance.instance.public_ip} ansible_user=${var.ansible_user} ansible_ssh_private_key_file=${var.private_ssh_key}" >> ./ansible-${var.namespace}-${var.stage}-${var.name}.inventory;
-  #     # echo "\n\n[gitlab:vars]" > ./ansible-${var.namespace}-${var.stage}-${var.name}.inventory;
-  #     # EOT
-  #     # echo "${var.ansible_vars}" > ./ansible-${var.namespace}-${var.stage}-${var.name}.inventory;
-  #     # We need to make sure the additional volume is attached first before running playbook -> see: aws_volume_attachment.persistent_storage
-  #   }
+  provisioner "local-exec" {
+    command = <<EOT
+echo "[gitlab]" > ./ansible-${var.namespace}-${var.stage}-${var.name}.inventory;
+echo "${aws_instance.instance.public_ip} ansible_user=${var.ansible_user} ansible_ssh_private_key_file=${var.private_ssh_key}" >> ./ansible-${var.namespace}-${var.stage}-${var.name}.inventory;
+echo "" >> ./ansible-${var.namespace}-${var.stage}-${var.name}.inventory;
+echo "[gitlab:vars]" >> ./ansible-${var.namespace}-${var.stage}-${var.name}.inventory;
+%{for k, v in var.ansible_vars~}
+echo "${k} = ${v}" >> ./ansible-${var.namespace}-${var.stage}-${var.name}.inventory;
+%{endfor~}
+  EOT
+    #     command = <<EOT
+    # echo "[gitlab]" > ./ansible-${var.namespace}-${var.stage}-${var.name}.inventory;
+    # echo "${aws_instance.instance.public_ip} ansible_user=${var.ansible_user} ansible_ssh_private_key_file=${var.private_ssh_key}" >> ./ansible-${var.namespace}-${var.stage}-${var.name}.inventory;
+    # echo "\n\n[gitlab:vars]" > ./ansible-${var.namespace}-${var.stage}-${var.name}.inventory;
+    # EOT
+    # echo "${var.ansible_vars}" > ./ansible-${var.namespace}-${var.stage}-${var.name}.inventory;
+    # We need to make sure the additional volume is attached first before running playbook -> see: aws_volume_attachment.persistent_storage
+  }
 
   tags = {
     Name      = "${var.namespace}-${var.stage}-${var.name}"
