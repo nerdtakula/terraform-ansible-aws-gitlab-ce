@@ -74,7 +74,7 @@ services:
             method: '{{ gitlab_ldap_method }}' # "tls" or "ssl" or "plain"
             bind_dn: '{{ gitlab_ldap_bind_dn }}'
             password: '{{ gitlab_ldap_password }}'
-            active_directory: {{ gitlab_ldap_active_directory }}
+            active_directory: {{ gitlab_ldap_active_directory|lower }}
             allow_username_or_email_login: {{ gitlab_ldap_allow_username_or_email_login|lower }}
             block_auto_created_users: {{ gitlab_ldap_block_auto_created_users|lower }}
             base: '{{ gitlab_ldap_bind_dn|lower }}'
@@ -87,7 +87,7 @@ services:
         gitlab_rails['gitlab_email_subject_suffix'] = '{{ gitlab_email_subject_suffix }}'
 
         # Gmail SMTP configuration
-        gitlab_rails['smtp_enable'] = {{ gitlab_smtp_enable }}
+        gitlab_rails['smtp_enable'] = {{ gitlab_smtp_enable|lower }}
         gitlab_rails['smtp_address'] = '{{ gitlab_smtp_address }}'
         gitlab_rails['smtp_port'] = {{ gitlab_smtp_port }}
         gitlab_rails['smtp_user_name'] = '{{ gitlab_smtp_user_name }}'
