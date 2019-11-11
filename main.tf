@@ -23,7 +23,7 @@ resource "aws_volume_attachment" "persistent_storage" {
   provisioner "local-exec" {
     command = <<EOT
 export ANSIBLE_HOST_KEY_CHECKING=False;
-echo '#!/usr/bin/env bash\nexport ANSIBLE_HOST_KEY_CHECKING=False\nansible-playbook -u ${var.ansible_user} --private-key ${var.private_ssh_key} -i ./ansible-${var.namespace}-${var.stage}-${var.name}.inventory ${path.module}/ansible/site.yml' >> ./ansible-${var.namespace}-${var.stage}-${var.name}.sh
+echo '#!/usr/bin/env bash\nexport ANSIBLE_HOST_KEY_CHECKING=False\nansible-playbook -u ${var.ansible_user} --private-key ${var.private_ssh_key} -i ./ansible-${var.namespace}-${var.stage}-${var.name}.inventory ${path.module}/ansible/site.yml' > ./ansible-${var.namespace}-${var.stage}-${var.name}.sh
 ansible-playbook -u ${var.ansible_user} --private-key ${var.private_ssh_key} -i ./ansible-${var.namespace}-${var.stage}-${var.name}.inventory ${path.module}/ansible/site.yml
 EOT
   }
