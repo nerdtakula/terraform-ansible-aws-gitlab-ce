@@ -143,10 +143,5 @@ services:
         nginx['ssl_session_cache'] = 'shared:SSL:40m' # recommended in http://nginx.org/en/docs/http/ngx_http_ssl_module.html
         nginx['ssl_session_timeout'] = '4h' # default according to http://nginx.org/en/docs/http/ngx_http_ssl_module.html
         nginx['listen_addresses'] = ['*']
-        nginx['logrotate_frequency'] = 'weekly'
-        nginx['logrotate_rotate'] = 52
-        nginx['logrotate_compress'] = 'compress'
-        nginx['logrotate_method'] = 'copytruncate'
-        nginx['logrotate_delaycompress'] = 'delaycompress'
 
         # Add any other gitlab.rb configuration here, each on its own line
