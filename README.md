@@ -43,7 +43,7 @@ For an example, see: [examples/full](examples/full)
 | gitlab_time_zone                           | Timezone of gitlab server                                   | string        | Pacific/Auckland                                            |
 | gitlab_lfs_enabled                         | Enable Large File Store in gitlab                           | boolean       | true                                                        |
 | gitlab_initial_root_password               | Root user password on first creation                        | string        | Ch4ng3:M3                                                   |
-| gitlab_omniauth_enabled                    | Enable OMNI Auth                                            | boolean       | true                                                        |
+| gitlab_omniauth_enabled                    | Enable OMNI Auth                                            | boolean       | false                                                        |
 | gitlab_omniauth_label                      | Button Label for OMNI Auth                                  | string        | G Suite                                                     |
 | gitlab_omniauth_external_provider          | OMNI Auth Provider                                          | string        | saml                                                        |
 | gitlab_omniauth_allow_single_sign_on       | Allow single signon from this provider                      | string        | saml                                                        |

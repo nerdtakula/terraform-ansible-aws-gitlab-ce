@@ -23,7 +23,7 @@ gitlab_lfs_enabled: true
 gitlab_initial_root_password: 'Ch4ng3:M3'
 
 # OmniAuth Configuration
-gitlab_omniauth_enabled: true
+gitlab_omniauth_enabled: false
 gitlab_omniauth_label: G Suite
 gitlab_omniauth_external_provider: saml
 gitlab_omniauth_allow_single_sign_on: saml
