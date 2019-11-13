@@ -25,7 +25,7 @@ services:
       GITLAB_OMNIBUS_CONFIG: |
         # Gitlab basic configuration
         letsencrypt['enable'] = {{ gitlab_letsencrypt_enable|lower }}
-        {% if gitlab_letsencrypt_enable == 'True' %}
+        {% if gitlab_letsencrypt_enable|lower == 'true' %}
         letsencrypt['contact_emails'] = ['{{ gitlab_letsencrypt_contact_email }}']
         letsencrypt['auto_renew'] = {{ gitlab_letsencrypt_auto_renew|lower }}
         letsencrypt['auto_renew_hour'] = '{{ gitlab_letsencrypt_auto_renew_hour }}'
@@ -40,7 +40,7 @@ services:
 
         # OmniAuth Configuration
         gitlab_rails['omniauth_enabled'] = {{ gitlab_omniauth_enabled|lower }}
-        {% if gitlab_omniauth_enabled == 'True' %}
+        {% if gitlab_omniauth_enabled|lower == 'true' %}
         gitlab_rails['omniauth_external_providers'] = ['{{ gitlab_omniauth_external_provider }}']
         gitlab_rails['omniauth_allow_single_sign_on'] = ['{{ gitlab_omniauth_allow_single_sign_on }}']
         gitlab_rails['omniauth_sync_email_from_provider'] = '{{ gitlab_omniauth_sync_email_from_provider }}'
@@ -69,7 +69,7 @@ services:
 
         # LDAP configuration
         gitlab_rails['ldap_enabled'] = {{ gitlab_ldap_enable|lower }}
-        {% if gitlab_ldap_enable == 'True' %}
+        {% if gitlab_ldap_enable|lower == 'true' %}
         gitlab_rails['ldap_servers'] = YAML.load <<-'EOS' # remember to close this block with 'EOS' below
           main: # 'main' is the GitLab 'provider ID' of this LDAP server
             label: 'LDAP'
