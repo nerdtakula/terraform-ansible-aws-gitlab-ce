@@ -25,7 +25,7 @@ services:
       GITLAB_OMNIBUS_CONFIG: |
         # Gitlab basic configuration
         letsencrypt['enable'] = {{ gitlab_letsencrypt_enable|lower }}
-        {% if gitlab_letsencrypt_enable|lower == 'true' %}
+{% if gitlab_letsencrypt_enable|lower == 'true' %}
         letsencrypt['contact_emails'] = ['{{ gitlab_letsencrypt_contact_email }}']
         letsencrypt['auto_renew'] = {{ gitlab_letsencrypt_auto_renew|lower }}
         letsencrypt['auto_renew_hour'] = '{{ gitlab_letsencrypt_auto_renew_hour }}'
@@ -40,7 +40,7 @@ services:
 
         # OmniAuth Configuration
         gitlab_rails['omniauth_enabled'] = {{ gitlab_omniauth_enabled|lower }}
-        {% if gitlab_omniauth_enabled|lower == 'true' %}
+{% if gitlab_omniauth_enabled|lower == 'true' %}
         gitlab_rails['omniauth_external_providers'] = ['{{ gitlab_omniauth_external_provider }}']
         gitlab_rails['omniauth_allow_single_sign_on'] = ['{{ gitlab_omniauth_allow_single_sign_on }}']
         gitlab_rails['omniauth_sync_email_from_provider'] = '{{ gitlab_omniauth_sync_email_from_provider }}'
@@ -108,7 +108,7 @@ services:
         postgresql['enable'] = {{ gitlab_postgresql_enable|lower }}
         # Recommend value is 1/4 of total RAM, up to 14GB.
         postgresql['shared_buffers'] = '{{ gitlab_postgresql_shared_buffers }}'
-        {% if gitlab_postgresql_enable == 'False' %}
+{% if gitlab_postgresql_enable == 'False' %}
         # PostgreSQl database configuration
         gitlab_rails['db_adapter'] = '{{ gitlab_db_adapter }}'
         gitlab_rails['db_encoding'] = 'utf8'
