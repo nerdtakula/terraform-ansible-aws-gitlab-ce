@@ -1,0 +1,5 @@
+SHELL="/bin/bash"
+PATH="/sbin:/bin:/usr/sbin:/usr/bin"
+
+# Runs as 00:30am each morning Tuesday to Saturday
+30 0 * * 2-6 root /mnt/gitlab-data/gitlab_backup_cron.sh > /mnt/gitlab-data/gitlab_backup_cron.log 2> /mnt/gitlab-data/gitlab_backup_cron.err
