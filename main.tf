@@ -16,7 +16,7 @@ resource "local_file" "ssl_key" {
  */
 resource "aws_volume_attachment" "persistent_storage" {
   device_name = "/dev/xvdf"
-  volume_id   = aws_ebs_volume.persistent_storage.id
+  volume_id   = data.aws_ebs_volume.persistent_storage.id
   instance_id = aws_instance.instance.id
 
   # Run the playbook after the volume has mounted
@@ -29,32 +29,41 @@ EOT
   }
 }
 
-resource "aws_ebs_volume" "persistent_storage" {
-  availability_zone = aws_instance.instance.availability_zone # Same zone as instance
-  size              = var.persistent_storage_size
+data "aws_ebs_volume" "persistent_storage" {
+  most_recent = true
 
-  tags = {
-    Name      = "${var.namespace}-${var.stage}-${var.name}-storage"
-    NameSpace = var.namespace
-    Stage     = var.stage
+  filter {
+    name   = "tag:Name"
+    values = [var.data_storage_ebs_name]
   }
 }
 
-resource "aws_ebs_snapshot" "persistent_storage" {
-  volume_id   = aws_ebs_volume.persistent_storage.id
-  description = "${var.namespace}-${var.stage}-${var.name}-storage-snapshot"
+# resource "aws_ebs_volume" "persistent_storage" {
+#   availability_zone = aws_instance.instance.availability_zone # Same zone as instance
+#   size              = var.persistent_storage_size
 
-  timeouts {
-    create = "24h"  # Snapshot once a day
-    delete = "120h" # Hold onto for 5 days
-  }
+#   tags = {
+#     Name      = "${var.namespace}-${var.stage}-${var.name}-storage"
+#     NameSpace = var.namespace
+#     Stage     = var.stage
+#   }
+# }
 
-  tags = {
-    Name      = "${var.namespace}-${var.stage}-${var.name}-storage-snapshot"
-    NameSpace = var.namespace
-    Stage     = var.stage
-  }
-}
+# resource "aws_ebs_snapshot" "persistent_storage" {
+#   volume_id   = aws_ebs_volume.persistent_storage.id
+#   description = "${var.namespace}-${var.stage}-${var.name}-storage-snapshot"
+
+#   timeouts {
+#     create = "24h"  # Snapshot once a day
+#     delete = "120h" # Hold onto for 5 days
+#   }
+
+#   tags = {
+#     Name      = "${var.namespace}-${var.stage}-${var.name}-storage-snapshot"
+#     NameSpace = var.namespace
+#     Stage     = var.stage
+#   }
+# }
 
 /*
  * Setup service instance

@@ -26,7 +26,7 @@ For an example, see: [examples/full](examples/full)
 | ssl_cert_key            | Name of local ssl crt key file                              | string        |               |
 | ansible_user            | User on AMI that has root privileges                        | string        | ubuntu        |
 | ansible_vars            | Variables to pass through to ansible playbook               | map           | `{}`          |
-| persistent_storage_size | Size of storage volume in Gigabytes                         | number        | 40            |
+| data_storage_ebs_name   | Name of EBS volume for persistent storage                   | string        |               |
 
 ## Ansible Vars
 

@@ -71,8 +71,7 @@ variable "ansible_vars" {
   default     = {}
 }
 
-variable "persistent_storage_size" {
-  type        = number
-  description = "Size of attached persistent storage (in GBs)"
-  default     = 40
+variable "data_storage_ebs_name" {
+  type        = string
+  description = "name of EBS volume for persistent storage"
 }
