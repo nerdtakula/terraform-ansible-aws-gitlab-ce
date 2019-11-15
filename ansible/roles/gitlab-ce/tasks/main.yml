@@ -21,6 +21,11 @@
     name: /mnt/gitlab-data/data
     state: directory
     recurse: yes
+
+- name: set permissions on gitlab data directory
+  file:
+    name: /mnt/gitlab-data/data
+    state: directory
     owner: git
     group: git
 
@@ -73,6 +78,38 @@
     owner: git
     group: git
     state: link
+
+- name: correct permissions on alertmanager data
+  file:
+    name: /mnt/gitlab-data/data/alertmanager
+    state: directory
+    recurse: yes
+    owner: 992
+    group: 992
+
+- name: correct permissions on grafana data
+  file:
+    name: /mnt/gitlab-data/data/grafana
+    state: directory
+    recurse: yes
+    owner: 992
+    group: 992
+
+- name: correct permissions on postgres data
+  file:
+    name: /mnt/gitlab-data/data/postgresql
+    state: directory
+    recurse: yes
+    owner: 996
+    group: 996
+
+- name: correct permissions on redis data
+  file:
+    name: /mnt/gitlab-data/data/redis
+    state: directory
+    recurse: yes
+    owner: 997
+    group: 997
 
 - name: check if ssh key has been created for user 'git'
   stat:
