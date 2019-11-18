@@ -144,4 +144,15 @@ services:
         nginx['ssl_session_timeout'] = '4h' # default according to http://nginx.org/en/docs/http/ngx_http_ssl_module.html
         nginx['listen_addresses'] = ['*']
 
+{% if gitlab_aws_backup_enable == 'False' %}
+        # Backup to AWS
+        gitlab_rails['backup_upload_connection'] = {
+            'provider' => 'AWS',
+            'region' => '{{ gitlab_aws_backup_region }}',
+            'aws_access_key_id' => '{{ gitlab_aws_backup_access_key_id }}',
+            'aws_secret_access_key' => '{{ gitlab_aws_backup_secret_access_key }}'
+        }
+        gitlab_rails['backup_upload_remote_directory'] = '{{ gitlab_aws_backup_upload_remote_directory}}'
+{% endif %}
+
         # Add any other gitlab.rb configuration here, each on its own line
