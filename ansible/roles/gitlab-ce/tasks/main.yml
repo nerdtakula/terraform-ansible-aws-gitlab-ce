@@ -33,43 +33,30 @@
   file:
     name: /var/logs/gitlab
     state: directory
-    recurse: yes
     owner: git
     group: git
 
 - name: create gitlab config directory
   file:
     name: /mnt/gitlab-data/config
-
     state: directory
-    recurse: yes
-    owner: git
-    group: git
 
 - name: create ssl certs directory
   file:
     name: /mnt/gitlab-data/certs
     state: directory
-    recurse: yes
-    owner: git
-    group: git
 
 - name: create gitlab-shell directory
   file:
     name: /opt/gitlab/embedded/service/gitlab-shell/bin
     state: directory
-    recurse: yes
-    owner: git
-    group: git
 
 - name: create ssh directory for gitlab service
   file:
     name: /mnt/gitlab-data/data/.ssh
     state: directory
-    recurse: yes
     owner: git
     group: git
-    mode: 0700
 
 - name: link git user .ssh directory to continers .ssh directory
   file:
@@ -83,7 +70,6 @@
   file:
     name: /mnt/gitlab-data/data/alertmanager
     state: directory
-    recurse: yes
     owner: 992
     group: 992
 
@@ -91,7 +77,6 @@
   file:
     name: /mnt/gitlab-data/data/grafana
     state: directory
-    recurse: yes
     owner: 992
     group: 992
 
@@ -99,7 +84,6 @@
   file:
     name: /mnt/gitlab-data/data/postgresql
     state: directory
-    recurse: yes
     owner: 996
     group: 996
 
@@ -107,7 +91,6 @@
   file:
     name: /mnt/gitlab-data/data/redis
     state: directory
-    recurse: yes
     owner: 997
     group: 997
 
