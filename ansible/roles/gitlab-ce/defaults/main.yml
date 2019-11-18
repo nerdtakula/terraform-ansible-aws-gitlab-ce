@@ -80,3 +80,9 @@ gitlab_db_port: 5432
 gitlab_db_database: database-name
 gitlab_db_username: database-username
 gitlab_db_password: database-password
+
+gitlab_aws_backup_enable: false
+gitlab_aws_backup_upload_remote_directory: my.s3.bucket
+gitlab_aws_backup_region: us-west-1
+gitlab_aws_backup_access_key_id: 'AAAABBBBCCCCDDDD'
+gitlab_aws_backup_secret_access_key: 'AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPpQqRrSs'
