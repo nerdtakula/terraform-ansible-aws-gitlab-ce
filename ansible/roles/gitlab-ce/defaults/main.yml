@@ -55,7 +55,7 @@ gitlab_ldap_block_auto_created_users: false
 gitlab_email_from: gitlab@domain.com
 gitlab_email_display_name: 'GitLab @ Domain'
 gitlab_email_reply_to: gitlab@domain.com
-gitlab_email_subject_suffix: 'GitLab @ Domain'
+gitlab_email_subject_suffix: ''
 
 # Email SMTP configuration
 gitlab_smtp_enable: true
